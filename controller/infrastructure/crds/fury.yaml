@@ -1,0 +1,30 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: furys.marvel.org
+spec:
+  scope: Namespaced
+  group: marvel.org
+  names:
+    kind: fury
+    plural: furys
+    singular: fury
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              type: object
+              required: ["selector"]
+              properties:
+                mode:
+                  type: string
+                  enum: ["hulk","default"]
+                  default: "default"
+                selector:
+                  type: object
+                  x-kubernetes-preserve-unknown-fields: true

@@ -1,0 +1,6 @@
+apiVersion: marvel.org/v1
+kind: hulkdeployment
+metadata:
+  name: minimal
+spec:
+  deploymentName: nginx-deployment

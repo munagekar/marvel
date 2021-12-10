@@ -1,0 +1,19 @@
+kind: MutatingWebhookConfiguration
+apiVersion: admissionregistration.k8s.io/v1beta1
+metadata:
+  name: mutating-webhook-hd.marvel.com
+  annotations:
+    cert-manager.io/inject-ca-from: default/webhook
+webhooks:
+  - name: webhook.default.svc
+    rules:
+      - operations: [ "CREATE" ]
+        apiGroups: [ "marvel.org" ]
+        apiVersions: [ "v1" ]
+        resources: [ "hulkdeployments" ]
+    clientConfig:
+      service:
+        namespace: default
+        name: webhook
+        path: /mutate/hulkdeployment
+    failurePolicy: Fail

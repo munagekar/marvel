@@ -1,0 +1,109 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: hulkdeployments.marvel.org
+spec:
+  scope: Namespaced
+  group: marvel.org
+  names:
+    kind: hulkdeployment
+    plural: hulkdeployments
+    singular: hulkdeployment
+    shortNames:
+      - hdeploy
+      - hulkdeploy
+      - hd
+  versions:
+    - name: v1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          properties:
+            spec:
+              required: ["deploymentName"]
+              type: object
+              properties:
+                deploymentName:
+                  type: string
+                  minimum: 1
+                mode:
+                  type: string
+                  enum: ["hulk","default"]
+                  default: "default"
+                hulk:
+                  type: object
+                  properties:
+                    replicas:
+                      type: integer
+                      minimum: 1
+                    containers:
+                      type: array
+                      items:
+                        type: object
+                        required: ["name"]
+                        properties:
+                          name:
+                            type: string
+                            minimum: 1
+                          resources:
+                            type: object
+                            properties:
+                              requests:
+                                type: object
+                                properties:
+                                  cpu:
+                                    x-kubernetes-int-or-string: true
+                                  ephemeral-storage:
+                                    type: string
+                                  memory:
+                                    type: string
+                              limits:
+                                type: object
+                                properties:
+                                  cpu:
+                                    x-kubernetes-int-or-string: true
+                                  ephemeral-storage:
+                                    type: string
+                                  memory:
+                                    type: string
+                default:
+                  type: object
+                  properties:
+                    replicas:
+                      type: integer
+                      minimum: 1
+                    containers:
+                      type: array
+                      items:
+                        type: object
+                        required: ["name"]
+                        properties:
+                          name:
+                            type: string
+                            minimum: 1
+                          resources:
+                            type: object
+                            properties:
+                              requests:
+                                type: object
+                                properties:
+                                  cpu:
+                                    x-kubernetes-int-or-string: true
+                                  ephemeral-storage:
+                                    type: string
+                                  memory:
+                                    type: string
+                              limits:
+                                type: object
+                                properties:
+                                  cpu:
+                                    x-kubernetes-int-or-string: true
+                                  ephemeral-storage:
+                                    type: string
+                                  memory:
+                                    type: string
+            status:
+              type: object
+              x-kubernetes-preserve-unknown-fields: true

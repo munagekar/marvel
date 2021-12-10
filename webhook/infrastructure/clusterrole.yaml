@@ -1,0 +1,9 @@
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: webhook
+rules:
+  # Application: read-only access for watching cluster-wide.
+  - apiGroups: [ apps ]
+    resources: [ deployments ]
+    verbs: [ list, patch ]

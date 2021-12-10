@@ -1,0 +1,11 @@
+apiVersion: marvel.org/v1
+kind: hulkdeployment
+metadata:
+  name: only-replicas
+spec:
+  deploymentName: nginx-deployment
+  mode: hulk
+  hulk:
+    replicas: 2
+  default:
+    replicas: 1

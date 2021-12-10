@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webhook
+  namespace: default
+  labels:
+    app: webhook
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webhook
+  template:
+    metadata:
+      labels:
+        app: webhook
+    spec:
+      serviceAccountName: webhook
+      containers:
+        - name: webhook
+          image: gcr.io/<project_name>/webhook:0.0.17
+          command: [ "gunicorn" ]
+          args:
+            - "webhook.app:app"
+            - "--bind=0.0.0.0:8443"
+            - "--certfile=/cert/tls.crt"
+            - "--keyfile=/cert/tls.key"
+          env:
+            - name: LOG_LEVEL
+              value: "INFO"
+            - name: PYTHONUNBUFFERED
+              value: "TRUE"
+          volumeMounts:
+            - readOnly: true
+              mountPath: /cert
+              name: webhook-cert
+          imagePullPolicy: Always
+          readinessProbe:
+            httpGet:
+              path: /health
+              scheme: HTTPS
+              port: 8443
+            initialDelaySeconds: 3
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /health
+              scheme: HTTPS
+              port: 8443
+            initialDelaySeconds: 3
+            periodSeconds: 10
+      volumes:
+        - name: webhook-cert
+          secret:
+            secretName: webhook-cert

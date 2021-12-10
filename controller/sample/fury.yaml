@@ -1,0 +1,8 @@
+apiVersion: marvel.org/v1
+kind: fury
+metadata:
+  name: abi
+spec:
+  mode: "default"
+  selector:
+    app: nginx

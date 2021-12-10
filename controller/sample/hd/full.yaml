@@ -1,0 +1,34 @@
+apiVersion: marvel.org/v1
+kind: hulkdeployment
+metadata:
+  name: full
+  namespace: default
+spec:
+  default:
+    containers:
+    - name: nginx
+      resources:
+        limits:
+          cpu: 500m
+          ephemeral-storage: 1Gi
+          memory: 2Gi
+        requests:
+          cpu: 500m
+          ephemeral-storage: 1Gi
+          memory: 2Gi
+    replicas: 1
+  deploymentName: nginx-deployment
+  hulk:
+    containers:
+    - name: nginx
+      resources:
+        limits:
+          cpu: 500m
+          ephemeral-storage: 1Gi
+          memory: 2Gi
+        requests:
+          cpu: 500m
+          ephemeral-storage: 1Gi
+          memory: 2Gi
+    replicas: 2
+  mode: hulk
